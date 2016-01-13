@@ -1,0 +1,53 @@
+repositories {
+    mavenLocal();
+    jcenter()
+    mavenCentral()
+    maven {
+	url "http://localhost:8081/nexus/content/groups/public"
+    }    
+}
+
+apply plugin: 'base' // To add "clean" task to the root project.
+apply plugin: 'eclipse'
+
+subprojects {
+	repositories {
+		mavenLocal()
+    		jcenter()
+    		mavenCentral()
+    		maven {
+        		url "http://localhost:8081/nexus/content/groups/public"
+    		}
+	}
+	
+	apply plugin: 'maven'
+	apply plugin: 'java'
+
+	ext.mavenGroupId = 'com.noeltest'
+    	ext.mavenVersion = "${version}"
+    	ext.mavenArtifactId = name
+	group = 'com.noeltest'
+
+	apply plugin: 'maven-publish'
+
+	publishing {
+                
+		repositories {
+		    maven {
+		        if("${version}".endsWith('-SNAPSHOT')) {
+		            url "http://localhost:8081/nexus/content/repositories/snapshots/"
+		        } else {
+		            url "http://localhost:8081/nexus/content/repositories/releases/"
+		        }
+		    
+		        credentials {
+		            username "deployment"
+		            password "deployment123"
+		        }
+		    }   
+		}
+    	}	
+
+}
+
+

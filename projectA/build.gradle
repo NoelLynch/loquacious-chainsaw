@@ -1,0 +1,9 @@
+version = '1.0.0-SNAPSHOT'
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      from components.java
+    }
+  }
+}
